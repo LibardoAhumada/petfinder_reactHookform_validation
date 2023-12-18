@@ -1,16 +1,22 @@
 body {
-    background-color: black;
+    background: #101010;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-}
-
-label {
+  }
+  
+  label {
     display: block;
-}
-
-input {
-    width: 100%;
-}
+  }
+  
+  span {
+    display: block;
+    color: tomato;
+    font-size: x-small;
+  }
+  
+  input {
+    margin-bottom: .3rem;
+  }
