@@ -1,7 +1,14 @@
 import { useForm } from "react-hook-form";
 import { useRef } from "react"; 
+import { useState } from "react";
+
+
 
 function App() {
+  
+
+  const [showPassword, setShowPassword] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -27,32 +34,7 @@ function App() {
       petPictures: null,
       generalFeatures: "",
     },
-  });
-
-  const registerPets = [watch("petname"), "Mascota2", "Mascota3"]; 
-  const selectedPet = watch("selectedPet");
-
-
-
-  const handlePetChange = (selectedPetName) => {
-    
-    const selectedPetDetails = getPetDetails(selectedPetName); 
-    setValue("specie", selectedPetDetails.specie);
-    setValue("breed", selectedPetDetails.breed);
-    setValue("color", selectedPetDetails.color);
-    setValue("petAgeYears", selectedPetDetails.petAgeYears);
-    setValue("petPictures", selectedPetDetails.petPictures);
-  };
-
-  const getPetDetails = (petname) => {
-    return {
-      specie: watch("specie"),
-      breed: watch("breed"),
-      color: watch("color"),
-      petAgeYears: watch("petAgeYears"),
-      petPictures: ["foto1.jpg", "foto2.jpg"],
-    };
-  };
+  }); 
 
   const password = useRef(null);
   password.current = watch("password", ""); 
@@ -88,7 +70,7 @@ function App() {
             },
           })}
         />
-        {errors.name?.message && <span>{errors.name.message}</span>}
+        {errors.name?.type && <span>{errors.name.message}</span>}
       </div>
 
       {/* Owner Age */}
@@ -112,45 +94,64 @@ function App() {
       </div>
 
       {/* Owner email */}
+      
       <div>
         <label>Correo Electrónico:</label>
         <input
           type="email"
-          name="email"
-          {...register("email", {
-            required: "Correo es requerido",
+          name="emailUser"
+          {...register("emailUser", {
+            required: {
+              value: true,
+              message: "Correo es requerido",
+            },
             pattern: {
               value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
               message: "Correo no válido",
             },
           })}
         />
-        {errors.email && <span>{errors.email.message}</span>}
+        {errors.emailUser && <span>{errors.emailUser.message}</span>}
       </div>
 
-      {/* Owner password */}
-      <label>Contraseña</label>
-      <input
-        type="password"
-        placeholder="contraseña"
-        {...register("password", {
-          required: "Contraseña es requerida",
-          minLength: {
-            value: 6,
-            message: "Contraseña debe ser mayor a 6 caracteres",
-          },
-        })}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
+       {/* Owner password */}
+       <div>
+        <label>Contraseña:</label>
+        <input
+          type={showPassword ? "text" : "password"}
+          name="passwordUser"
+          placeholder="contraseña"
+          {...register("passwordUser", {
+            required: {
+              value: true,
+              message: "Contraseña es requerida",
+            },
+            minLength: {
+              value: 6,
+              message: "Contraseña debe ser mayor a 6 caracteres",
+            },
+          })}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? "Ocultar" : "Mostrar"}
+        </button>
+        {errors.passwordUser && <span>{errors.passwordUser.message}</span>}
+      </div>
 
       {/* Confirm password */}
       <div>
         <label>Confirma Contraseña:</label>
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="confirmPassword"
           {...register("confirmPassword", {
-            required: "Confirmar contraseña es requerida",
+            required: {
+              value: true,
+              message: "Confirmar contraseña es requerida",
+            },
             minLength: {
               value: 6,
               message: "Confirmar contraseña debe ser mayor a 6 caracteres",
